@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--<bean class="org.javaboy.transaction.UserDao" id="uerDao" />
+    <bean class="org.javaboy.transaction.UserService" id="userService"/>-->
+    <context:component-scan base-package="org.javaboy.transaction" use-default-filters="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+        <property name="username" value="sxgs"/>
+        <property name="password" value="sxgs_123"/>
+        <property name="url" value="jdbc:oracle:thin:@172.27.34.149:1521/erpdb03"/>
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+    </bean>
+    <bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="update*"/>
+            <tx:method name="insert*"/>
+            <tx:method name="add*"/>
+            <tx:method name="delete*"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="pc1" expression="execution(* org.javaboy.transaction.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc1"/>
+    </aop:config>-->
+</beans>

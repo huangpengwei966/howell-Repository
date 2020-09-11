@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <!--<bean class="Book" id="book"/>-->
+    <bean class="org.javaboy.Book" id="book1">
+        <constructor-arg index="0" value="1"/>
+        <constructor-arg index="1" value="三国演义"/>
+        <constructor-arg index="2" value="30"/>
+    </bean>
+    <bean class="org.javaboy.Book" id="book2">
+        <constructor-arg name="id" value="2"/>
+        <constructor-arg name="name" value="红楼梦"/>
+        <constructor-arg name="price" value="40"/>
+    </bean>
+    <bean class="org.javaboy.Book" id="book3">
+        <property name="id" value="3"/>
+        <property name="name" value="水浒传"/>
+        <property name="price" value="30"/>
+    </bean>
+    <bean class="org.javaboy.Book" id="book4" p:id="4" p:name="西游记" p:price="33"></bean>
+
+    <!--<bean class="org.javaboy.OkHttpUtils" factory-method="getInstance" id="okHttpClient"></bean>-->
+    <bean class="org.javaboy.OkHttpUtils" id="okHttpUtils"/>
+    <bean class="okhttp3.OkHttpClient" factory-bean="okHttpUtils" factory-method="getInstance" id="okHttpClient"></bean>
+
+    <!--<bean class="org.javaboy.User" id="user">
+        <property name="cat" ref="cat"/>
+    </bean>-->
+    <!--<bean class="org.javaboy.User" id="user">
+        <property name="cat" ref="cat"/>
+        <property name="favorites">
+            <list>
+                <value>足球</value>
+                <value>篮球</value>
+                <value>乒乓球</value>
+            </list>
+        </property>
+    </bean>-->
+    <bean class="org.javaboy.User" id="user">
+        <property name="cat" ref="cat"/>
+        <property name="favorites">
+            <list>
+                <value>足球</value>
+                <value>篮球</value>
+                <value>乒乓球</value>
+            </list>
+        </property>
+        <property name="cats">
+            <list>
+                <ref bean="cat"/>
+                <ref bean="cat2"/>
+                <bean class="org.javaboy.Cat" id="cat3">
+                    <property name="name" value="小花"/>
+                    <property name="color" value="花色"/>
+                </bean>
+            </list>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="age" value="99"/>
+                <entry key="name" value="javaboy"/>
+            </map>
+        </property>
+        <property name="info">
+            <props>
+                <prop key="age">99</prop>
+                <prop key="name">javaboy</prop>
+            </props>
+        </property>
+    </bean>
+    <bean class="org.javaboy.Cat" id="cat">
+        <property name="name" value="小白"/>
+        <property name="color" value="白色"/>
+    </bean>
+    <bean class="org.javaboy.Cat" id="cat2">
+        <property name="name" value="小黑"/>
+        <property name="color" value="黑色"/>
+    </bean>
+
+    <!--<context:component-scan base-package="org.javaboy.javaconfig"/>-->
+    <context:component-scan base-package="org.javaboy.javaconfig" use-default-filters="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+</beans>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="db.properties"></properties>
+    <!--<typeAliases>
+        <typeAlias type="org.javaboy.mybatis.model.User2" alias="User2"/>
+    </typeAliases>-->
+    <typeAliases>
+        <package name="org.javaboy.mybatis.model"/>
+    </typeAliases>
+    <!--<typeHandlers>
+        <package name="org.javaboy.mybatis"/>
+    </typeHandlers>-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!--<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+                <property name="url" value="jdbc:oracle:thin:@172.27.34.149:1521/erpdb03"/>
+                <property name="username" value="sxgs"/>
+                <property name="password" value="sxgs_123"/>-->
+                <property name="driver" value="${db.driver}"/>
+                <property name="url" value="${db.url}"/>
+                <property name="username" value="${db.username}"/>
+                <property name="password" value="${db.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--<mapper resource="org/javaboy/mybatis/mymapper/UserMapper.xml"/>-->
+        <!--<package name="org.javaboy.mybatis.mymapper"/>-->
+        <mapper class="org.javaboy.mybatis.mymapper.UserMapper"/>
+    </mappers>
+</configuration>
