@@ -3,16 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!-- 1.properties属性引入外部配置文件 -->
     <properties resource="db.properties"></properties>
+
+    <!-- 3.别名设置 -->
     <!--<typeAliases>
         <typeAlias type="org.javaboy.mybatis.model.User2" alias="User2"/>
     </typeAliases>-->
+
+    <!-- 2.全局配置参数 -->
+    <settings>
+        <!-- 设置是否启用懒加载 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <!-- 3.别名设置 -->
     <typeAliases>
         <package name="org.javaboy.mybatis.model"/>
     </typeAliases>
-    <!--<typeHandlers>
+
+    <!-- 4.类型转换器 -->
+    <typeHandlers>
         <package name="org.javaboy.mybatis"/>
-    </typeHandlers>-->
+    </typeHandlers>
+
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -28,9 +43,14 @@
             </dataSource>
         </environment>
     </environments>
+
+
+    <!-- 加载映射文件 -->
     <mappers>
         <!--<mapper resource="org/javaboy/mybatis/mymapper/UserMapper.xml"/>-->
         <!--<package name="org.javaboy.mybatis.mymapper"/>-->
         <mapper class="org.javaboy.mybatis.mymapper.UserMapper"/>
+        <mapper class="org.javaboy.mybatis.mymapper.BookMapper"/>
+        <mapper class="org.javaboy.mybatis.mymapper.UserRoleMapper"/>
     </mappers>
 </configuration>

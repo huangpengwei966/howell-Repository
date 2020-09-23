@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.javaboy.mybatis.mymapper.UserRoleMapper">
+
+   <!-- <resultMap id="UserWithRole" type="org.javaboy.mybatis.model.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <collection property="roles" ofType="org.javaboy.mybatis.model.Role">
+            <id property="id" column="rid"/>
+            <result property="name" column="rname"/>
+            <result property="nameZh" column="rnameZH"/>
+        </collection>
+    </resultMap>
+    <select id="getUserById" resultMap="UserWithRole">
+        SELECT u.*,r.id AS rid,r.name AS rname,r.nameZh AS rnameZh
+            FROM USER2 u,role r,user_role ur
+            WHERE u.id=ur.usid AND ur.rid=r.id AND u.id=#{id}
+    </select>-->
+
+    <resultMap id="UserWithRole" type="org.javaboy.mybatis.model.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <collection property="roles" select="org.javaboy.mybatis.mymapper.UserRoleMapper.getRolesByUid"
+                    column="id" fetchType="lazy">
+        </collection>
+    </resultMap>
+    <select id="getUserById" resultMap="UserWithRole">
+        select * from USER2  where id=#{id}
+    </select>
+    <select id="getRolesByUid" resultType="org.javaboy.mybatis.model.Role">
+        SELECT r.* FROM role r,user_role ur WHERE r.id=ur.rid AND ur.usid=#{id}
+    </select>
+
+</mapper>

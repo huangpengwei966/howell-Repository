@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.javaboy.mybatis.mymapper.BookMapper">
+
+    <!--<resultMap id="BookWithAuthor" type="org.javaboy.mybatis.model.Book">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <association property="author" javaType="org.javaboy.mybatis.model.Author">
+            <id column="aid" property="id"/>
+            <result column="aname" property="name"/>
+            <result column="aage" property="age"/>
+        </association>
+    </resultMap>
+    <select id="getBookById" resultMap="BookWithAuthor">
+        SELECT b.*,a.age AS aage,a.id AS aid,a.name AS aname FROM book b,author a WHERE b.aid=a.id AND b.id=#{id}
+    </select>-->
+
+   <!-- <resultMap id="BaseResultMap" type="org.javaboy.mybatis.model.Book">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    <resultMap id="BookWithAuthor" type="org.javaboy.mybatis.model.Book" extends="BaseResultMap">
+        <association property="author" javaType="org.javaboy.mybatis.model.Author">
+            <id column="aid" property="id"/>
+            <result column="aname" property="name"/>
+            <result column="aage" property="age"/>
+        </association>
+    </resultMap>
+    <select id="getBookById" resultMap="BookWithAuthor">
+        SELECT b.*,a.age AS aage,a.id AS aid,a.name AS aname FROM book b,author a WHERE b.aid=a.id AND b.id=#{id}
+    </select>-->
+
+
+    <resultMap id="BaseResultMap" type="org.javaboy.mybatis.model.Book">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    <resultMap id="BookWithAuthor2" type="org.javaboy.mybatis.model.Book" extends="BaseResultMap">
+        <association property="author" javaType="org.javaboy.mybatis.model.Author"
+                     select="org.javaboy.mybatis.mymapper.BookMapper.getAuthorById" column="aid" fetchType="lazy"/>
+    </resultMap>
+    <select id="getBookById2" resultMap="BookWithAuthor2">
+        select * from book where id=#{id}
+    </select>
+    <select id="getAuthorById" resultType="org.javaboy.mybatis.model.Author">
+        select * from author where id=#{aid}
+    </select>
+
+</mapper>

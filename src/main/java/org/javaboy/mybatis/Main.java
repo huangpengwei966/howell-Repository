@@ -15,11 +15,11 @@ public class Main {
         SqlSessionFactory factory=SqlSessionFactoryUtils.getInstance();
         SqlSession sqlSession = factory.openSession();
 
-        /*//查
+        //查
         User2 user = (User2) sqlSession.selectOne("org.javaboy.mybatis.mymapper.UserMapper.getUserById",3);
-        System.out.println(user);*/
-        List<User2> list = sqlSession.selectList("org.javaboy.mybatis.mymapper.UserMapper.getAllUser");
-        System.out.println(list);
+        System.out.println(user);
+        /*List<User2> list = sqlSession.selectList("org.javaboy.mybatis.mymapper.UserMapper.getAllUser");
+        System.out.println(list);*/
 
         /*//增
         User2 user = new User2();

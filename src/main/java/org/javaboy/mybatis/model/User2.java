@@ -1,5 +1,6 @@
 package org.javaboy.mybatis.model;
 
+
 import java.util.List;
 
 public class User2 {

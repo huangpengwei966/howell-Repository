@@ -8,14 +8,32 @@
     <resultMap id="rs" type="user2" >
         <result column="favorites" property="favorites" typeHandler="org.javaboy.mybatis.List2VarcharHandler"/>
     </resultMap>
-    <select id="getAllUser" resultMap="rs">
+
+    <!--允许只返回User2类中部分属性-->
+    <resultMap id="MyResultMap" type="org.javaboy.mybatis.model.User2">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="address" property="address"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        id,username,address
+    </sql>
+
+    <!--<select id="getAllUser" resultMap="rs">
         select * from user1
-    </select>
+    </select>-->
     <!--<select id="getAllUser" resultType="user2">
         select * from user1
     </select>-->
+    <select id="getAllUser" resultType="user2">
+         select * from user1 order by ${orderBy}
+    </select>
 
-    <select id="getUserById"  parameterType="int" resultType="org.javaboy.mybatis.model.User2" >
+    <!--<select id="getUserById"  parameterType="int" resultType="org.javaboy.mybatis.model.User2" >
+        select * from user1 where id=#{id}
+    </select>-->
+    <select id="getUserById" resultMap="MyResultMap">
         select * from user1 where id=#{id}
     </select>
 
@@ -23,14 +41,83 @@
         insert into user1 (username,address) values (#{username},#{address})
     </insert>-->
     <insert id="addUser" parameterType="user2">
-    insert into user1 (username,address,favorites) values (#{username},#{address},#{favorites,typeHandler=org.javaboy.mybatis.List2VarcharHandler})
+        insert into user1 (username,address,favorites) values (#{username},#{address},#{favorites,typeHandler=org.javaboy.mybatis.List2VarcharHandler})
     </insert>
+
 
     <delete id="deleteUserById" parameterType="java.lang.Integer">
         delete from user1 where id=#{id}
     </delete>
 
-    <update id="updateUser" parameterType="org.javaboy.mybatis.model.User2">
+    <!--<update id="updateUser" parameterType="org.javaboy.mybatis.model.User2">
+        update user1 set username = #{username} where id=#{id}
+    </update>-->
+    <update id="updateUser" parameterType="user2">
+        update user1
+        <set>
+            <if test="username!=null">
+                username = #{username},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="favorites!=null">
+                favorites=#{favorites},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--<update id="updateUsernameById">
+        update user1 set username = #{param1} where id=#{param2}
+    </update>-->
+    <update id="updateUsernameById">
         update user1 set username = #{username} where id=#{id}
     </update>
+
+    <!--<select id="getUserByName" parameterType="string" resultType="org.javaboy.mybatis.model.User2">
+        select * from user1 where username like concat('%','${username}')
+    </select>-->
+    <select id="getUserByName" parameterType="string" resultType="org.javaboy.mybatis.model.User2">
+        select * from user1 where username like concat('%',#{username})
+    </select>
+
+    <select id="getUserByPage" resultType="user2">
+        select a1.* from (select user1.*,rownum rn from user1) a1
+        <if test="start !=null and count!=null">
+            where rn between #{start} and #{count}
+        </if>
+    </select>
+
+    <select id="getUserByUsernameAndId" resultType="user2">
+        select * from user1
+        <where>
+            <if test="id!=null">
+                and id>#{id}
+            </if>
+            <if test="name!=null">
+                and username like concat('%',#{name})
+            </if>
+        </where>
+    </select>
+
+    <!--<select id="getUserByIds" resultType="user2">
+        select * from user1 where id in
+        <foreach collection="ids" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>-->
+    <select id="getUserByIds" resultType="user2">
+        select <include refid="Base_Column" /> from user1 where id in
+        <foreach collection="ids" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="batchInsertUser">
+        insert into user1 (username,address)
+        <foreach collection="users" separator="union all" item="user">
+           select #{user.username},#{user.address} from dual
+        </foreach>
+    </insert>
 </mapper>
